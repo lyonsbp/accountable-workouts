@@ -1,0 +1,24 @@
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  email: AWSEmail
+  active: Boolean
+  Schedules: [Schedule] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+enum WEEKDAY {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+type Schedule @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  day: WEEKDAY
+  time: AWSTime
+  notify_before_mins: Int
+  userID: ID! @index(name: "byUser")
+}
